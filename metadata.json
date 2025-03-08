@@ -1,0 +1,122 @@
+[
+    {
+        "id": "1",
+        "SKU": "SKU-SONY-WH1000XM5-BEIGE",
+        "name": "Sony WH-1000XM5 Noise Cancelling Wireless Headphones (Beige)",
+        "brand": "Sony",
+        "category": "Electronics / Audio / Headphones",
+        "color": "Beige",
+        "price": 399.99,
+        "description": "Premium over-ear wireless headphones with industry-leading noise cancellation, up to 30 hours of battery life, and superior sound quality.",
+        "text": "Sony WH-1000XM5 Noise Cancelling Wireless Headphones (Beige) by Sony are premium over-ear wireless headphones with industry-leading noise cancellation, offering up to 30 hours of battery life and superior sound quality. Available in Beige, they belong to the Electronics / Audio / Headphones category and are priced at $399.99.",
+        "image_path": "/home/vicky/Product_Matching_Pipeline/Dataset/Sony headphone- 4.jpg"
+    },
+    {
+        "id": "2",
+        "SKU": "SKU-SONY-WH1000XM5-BLACK-V1",
+        "name": "Sony WH-1000XM5 Noise Cancelling Wireless Headphones (Black)",
+        "brand": "Sony",
+        "category": "Electronics / Audio / Headphones",
+        "color": "Black",
+        "price": 399.99,
+        "description": "Premium over-ear wireless headphones with industry-leading noise cancellation, sleek design, and long battery life.",
+        "text": "Sony WH-1000XM5 Noise Cancelling Wireless Headphones (Black) by Sony deliver premium sound with industry-leading noise cancellation, a sleek design, and long battery life. Available in Black, these headphones belong to the Electronics / Audio / Headphones category and are priced at $399.99.",
+        "image_path": "/home/vicky/Product_Matching_Pipeline/Dataset/Sony headphone- 3.jpg"
+    },
+    {
+        "id": "3",
+        "SKU": "SKU-SONY-WH1000XM4-BLACK",
+        "name": "Sony WH-1000XM4 Noise Cancelling Wireless Headphones (Black)",
+        "brand": "Sony",
+        "category": "Electronics / Audio / Headphones",
+        "color": "Black",
+        "price": 349.99,
+        "description": "High-end over-ear headphones with exceptional noise cancellation, touch controls, and all-day comfort.",
+        "text": "Sony WH-1000XM4 Noise Cancelling Wireless Headphones (Black) by Sony feature exceptional noise cancellation, touch controls, and all-day comfort. These high-end headphones, available in Black, are part of the Electronics / Audio / Headphones category and are priced at $349.99.",
+        "image_path": "/home/vicky/Product_Matching_Pipeline/Dataset/Sony headphone- 2.jpg"
+    },
+    {
+        "id": "4",
+        "SKU": "SKU-SONY-WH1000XM5-BLUE",
+        "name": "Sony WH-1000XM5 Noise Cancelling Wireless Headphones (Blue)",
+        "brand": "Sony",
+        "category": "Electronics / Audio / Headphones",
+        "color": "Blue",
+        "price": 399.99,
+        "description": "High-quality wireless headphones in a stylish blue finish, offering industry-leading noise cancellation and premium sound.",
+        "text": "Sony WH-1000XM5 Noise Cancelling Wireless Headphones (Blue) by Sony combine high-quality wireless performance with a stylish blue finish, delivering industry-leading noise cancellation and premium sound. Priced at $399.99, they fall under the Electronics / Audio / Headphones category.",
+        "image_path": "/home/vicky/Product_Matching_Pipeline/Dataset/Sony headphone- 1.jpg"
+    },
+    {
+        "id": "5",
+        "SKU": "SKU-ADIDAS-TRACKJACKET-NAVY",
+        "name": "Adidas Originals Track Jacket (Navy/Gold Stripes)",
+        "brand": "Adidas",
+        "category": "Apparel / Jackets",
+        "color": "Navy/Gold",
+        "price": 69.99,
+        "description": "Classic track jacket with signature Adidas stripes in gold, featuring a stand-up collar and front zip pockets.",
+        "text": "Adidas Originals Track Jacket (Navy/Gold Stripes) from Adidas is a classic track jacket featuring signature gold Adidas stripes, a stand-up collar, and front zip pockets. Available in a Navy/Gold combination, it belongs to the Apparel / Jackets category and is priced at $69.99.",
+        "image_path": "/home/vicky/Product_Matching_Pipeline/Dataset/Adidas-3.jpg"
+    },
+    {
+        "id": "6",
+        "SKU": "SKU-ADIDAS-TRACKJACKET-GREEN",
+        "name": "Adidas Originals Track Jacket (Green/White Stripes)",
+        "brand": "Adidas",
+        "category": "Apparel / Jackets",
+        "color": "Green/White",
+        "price": 69.99,
+        "description": "Iconic Adidas track jacket in green with white stripes, made from comfortable and breathable materials.",
+        "text": "Adidas Originals Track Jacket (Green/White Stripes) by Adidas is an iconic track jacket featuring green with white stripes and made from comfortable, breathable materials. It is part of the Apparel / Jackets category and is priced at $69.99.",
+        "image_path": "/home/vicky/Product_Matching_Pipeline/Dataset/Adidas-2.jpg"
+    },
+    {
+        "id": "7",
+        "SKU": "SKU-ADIDAS-PUFFERJACKET-BLACK",
+        "name": "Adidas Puffer Jacket (Black)",
+        "brand": "Adidas",
+        "category": "Apparel / Jackets",
+        "color": "Black",
+        "price": 99.99,
+        "description": "Warm and lightweight puffer jacket with a sleek black finish, featuring Adidas branding on the chest.",
+        "text": "Adidas Puffer Jacket (Black) from Adidas is a warm and lightweight jacket with a sleek black finish and distinctive Adidas branding on the chest. It belongs to the Apparel / Jackets category and is priced at $99.99.",
+        "image_path": "/home/vicky/Product_Matching_Pipeline/Dataset/Adidas-1.jpg"
+    },
+    {
+        "id": "8",
+        "SKU": "SKU-LS-SHIRT-BLUE",
+        "name": "Men's Long-Sleeve Button-Down Shirt (Blue)",
+        "brand": "Generic Brand",
+        "category": "Apparel / Shirts",
+        "color": "Blue",
+        "price": 29.99,
+        "description": "A stylish men's long-sleeve button-down shirt in a light blue color, perfect for both business and casual wear.",
+        "text": "Men's Long-Sleeve Button-Down Shirt (Blue) by Generic Brand is a stylish long-sleeve shirt in light blue, perfect for both business and casual wear. It falls under the Apparel / Shirts category and is priced at $29.99.",
+        "image_path": "/home/vicky/Product_Matching_Pipeline/Dataset/Mango-3.jpg"
+    },
+    {
+        "id": "9",
+        "SKU": "SKU-LS-SHIRT-BROWN",
+        "name": "Men's Long-Sleeve Button-Down Shirt (Brown)",
+        "brand": "Generic Brand",
+        "category": "Apparel / Shirts",
+        "color": "Brown",
+        "price": 34.99,
+        "description": "A versatile men's long-sleeve button-down shirt in a warm brown hue, ideal for a modern yet understated look.",
+        "text": "Men's Long-Sleeve Button-Down Shirt (Brown) by Generic Brand offers versatility with its warm brown hue, ideal for a modern yet understated look. Priced at $34.99, it belongs to the Apparel / Shirts category.",
+        "image_path": "/home/vicky/Product_Matching_Pipeline/Dataset/Mango-2.jpg"
+    },
+    {
+        "id": "10",
+        "SKU": "SKU-LS-SHIRT-BLACK",
+        "name": "Men's Long-Sleeve Button-Down Shirt (Black)",
+        "brand": "Generic Brand",
+        "category": "Apparel / Shirts",
+        "color": "Black",
+        "price": 39.99,
+        "description": "A classic men's long-sleeve button-down shirt in black, offering a sleek and professional style suitable for any occasion.",
+        "text": "Men's Long-Sleeve Button-Down Shirt (Black) by Generic Brand is a classic button-down shirt in black that delivers a sleek, professional style suitable for any occasion. It is part of the Apparel / Shirts category and is priced at $39.99.",
+        "image_path": "/home/vicky/Product_Matching_Pipeline/Dataset/Mango-1.jpg"
+    }
+]

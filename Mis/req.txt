@@ -1,0 +1,17 @@
+torch==2.5.1+cu124
+torchvision==0.20.1+cu124
+torch_tensorrt==2.5.0
+transformers==4.48.3
+tensorrt==10.3.0
+tensorrt_bindings==10.3.0
+tensorrt_libs==10.3.0
+onnx==1.17.0
+onnxruntime==1.20.1
+clip @ git+https://github.com/openai/CLIP.git@dcba3cb2e2827b402d2701e7e1c7d9fed8a20ef1
+
+cuda-python==12.6.0
+cuda==12.6.0
+nvidia-cudnn-cu12==9.1.0.70
+torch @ https://download.pytorch.org/whl/cu124/torch-2.5.1%2Bcu124-cp311-cp311-linux_x86_64.whl
+torchaudio @ https://download.pytorch.org/whl/cu124/torchaudio-2.5.1%2Bcu124-cp311-cp311-linux_x86_64.whl
+torchvision @ https://download.pytorch.org/whl/cu124/torchvision-0.20.1%2Bcu124-cp311-cp311-linux_x86_64.whl
