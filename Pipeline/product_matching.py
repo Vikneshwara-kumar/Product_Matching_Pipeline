@@ -1,32 +1,96 @@
 """
 product_matching.py
 -------------------
-Handles the product matching logic by combining Qdrant and MongoDB queries.
+Handles product matching logic by combining Qdrant and MongoDB queries.
+Includes an in-memory cache to optimize repeated queries.
 """
 
 import asyncio
+import numpy as np
+import hashlib
 from db import qdrant_client, mongodb_client
+from utils.logger import log_event_sync  # our MongoDB logger
 
-async def match_product(text_embedding, visual_embedding):
+# In-memory cache for matching results.
+# Keys are hashes of embeddings; values are product metadata.
+product_cache = {}
+cache_lock = asyncio.Lock()
+
+def hash_embedding(embedding: np.ndarray) -> str:
     """
-    Matches an input product by performing a nearest neighbor search on Qdrant
-    using combined text and visual embeddings. Retrieves metadata from MongoDB.
+    Computes an MD5 hash for a given embedding.
+    This hash is used as the cache key.
     """
-    # Option 1: Concatenate embeddings, or perform separate queries
-    combined_embedding = combine_embeddings(text_embedding, visual_embedding)
+    m = hashlib.md5()
+    m.update(embedding.tobytes())
+    return m.hexdigest()
+
+async def match_product_by_text(text_embedding: np.ndarray):
+    """
+    Matches a product using a text embedding by querying the Qdrant 'product_text' collection,
+    then retrieving metadata from MongoDB.
+    Uses an in-memory cache to avoid redundant queries.
+
+    Args:
+        text_embedding (np.ndarray): The text embedding vector.
     
-    # Query Qdrant for nearest neighbor (assume top-1 match)
-    product_id = await qdrant_client.search_embedding(combined_embedding)
-    
-    # Retrieve product metadata from MongoDB
-    product = await mongodb_client.get_product(product_id)
-    
+    Returns:
+        dict: The product metadata.
+    """
+    cache_key = "text_" + hash_embedding(text_embedding)
+    async with cache_lock:
+        if cache_key in product_cache:
+            log_event_sync("INFO", f"Cache hit for text embedding.", extra={"cache_key": cache_key})
+            return product_cache[cache_key]
+
+    try:
+        product_id = await qdrant_client.search_embedding(text_embedding, collection="product_text")
+    except Exception as e:
+        log_event_sync("ERROR", f"Error during text matching: {e}", extra={"cache_key": cache_key})
+        raise RuntimeError(f"Text matching failed: {e}")
+
+    try:
+        product = await mongodb_client.get_product(product_id)
+    except Exception as e:
+        log_event_sync("ERROR", f"Error retrieving product metadata for product id {product_id}: {e}", extra={"cache_key": cache_key})
+        raise RuntimeError(f"Error retrieving product metadata for product id {product_id}: {e}")
+
+    async with cache_lock:
+        product_cache[cache_key] = product
+
     return product
 
-def combine_embeddings(text_emb, visual_emb):
+async def match_product_by_visual(visual_embedding: np.ndarray):
     """
-    Combines text and visual embeddings into a single embedding vector.
-    This example simply concatenates them; alternative strategies can be used.
+    Matches a product using a visual embedding by querying the Qdrant 'product_image' collection,
+    then retrieving metadata from MongoDB.
+    Uses an in-memory cache to optimize repeated queries.
+
+    Args:
+        visual_embedding (np.ndarray): The visual embedding vector.
+    
+    Returns:
+        dict: The product metadata.
     """
-    import numpy as np
-    return np.concatenate([text_emb, visual_emb], axis=-1)
+    cache_key = "visual_" + hash_embedding(visual_embedding)
+    async with cache_lock:
+        if cache_key in product_cache:
+            log_event_sync("INFO", f"Cache hit for visual embedding.", extra={"cache_key": cache_key})
+            return product_cache[cache_key]
+
+    try:
+        product_id = await qdrant_client.search_embedding(visual_embedding, collection="product_image")
+    except Exception as e:
+        log_event_sync("ERROR", f"Error during visual matching: {e}", extra={"cache_key": cache_key})
+        raise RuntimeError(f"Visual matching failed: {e}")
+
+    try:
+        product = await mongodb_client.get_product(product_id)
+    except Exception as e:
+        log_event_sync("ERROR", f"Error retrieving product metadata for product id {product_id}: {e}", extra={"cache_key": cache_key})
+        raise RuntimeError(f"Error retrieving product metadata for product id {product_id}: {e}")
+
+    async with cache_lock:
+        product_cache[cache_key] = product
+
+    return product
