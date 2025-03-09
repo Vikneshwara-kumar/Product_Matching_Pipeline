@@ -44,7 +44,7 @@ The system also includes an in-memory caching layer to optimize repeated searche
 
 ## Demo video 
 [Watch the demo video](./assets/demo_video.mp4)
-<video src="https://raw.githubusercontent.com/https:/Vikneshwara-kumar/Product_Matching_Pipeline/assets/demo_video.mp4" controls>
+<video src="https://raw.githubusercontent.com/https:/Vikneshwara-kumar/Product_Matching_Pipeline/blob/main/assets/demo_video.mp4" controls>
   Your browser does not support the video tag.
 </video>
 
