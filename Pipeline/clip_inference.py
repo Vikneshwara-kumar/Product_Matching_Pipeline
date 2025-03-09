@@ -14,10 +14,12 @@ from utils.logger import log_event_sync  # our MongoDB logger
 from transformers import CLIPProcessor, CLIPTokenizer
 
 # Global processor and tokenizer instances.
+
 PROCESSOR = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 TOKENIZER = CLIPTokenizer.from_pretrained("openai/clip-vit-base-patch32")
 
-TRITON_URL = "localhost:8000"  # Triton Inference Server endpoint
+trition_url = "localhost:8000"  # Triton Inference Server endpoint
+TCLIENT = httpclient.InferenceServerClient(url=trition_url)
 
 async def get_clip_text_embedding(text_prompt: str) -> np.ndarray:
     """
@@ -38,7 +40,7 @@ async def get_clip_text_embedding(text_prompt: str) -> np.ndarray:
 
     try:
         # Create Triton client.
-        client = httpclient.InferenceServerClient(url=TRITON_URL)
+        client = TCLIENT
     except Exception as e:
         log_event_sync("ERROR", f"Failed to create Triton client for text: {e}", extra={"function": "get_clip_text_embedding"})
         raise ConnectionError(f"Failed to create Triton client: {e}")
@@ -87,7 +89,7 @@ async def get_clip_visual_embedding(image) -> np.ndarray:
 
     try:
         # Create Triton client.
-        client = httpclient.InferenceServerClient(url=TRITON_URL)
+        client = TCLIENT
     except Exception as e:
         log_event_sync("ERROR", f"Failed to create Triton client for image: {e}", extra={"function": "get_clip_visual_embedding"})
         raise ConnectionError(f"Failed to create Triton client: {e}")
@@ -136,12 +138,21 @@ def preprocess_image(image):
         image_array = inputs["pixel_values"]
 
         # Convert to numpy array if not already, then cast to float16.
-        if not hasattr(image_array, "numpy"):
-            raise ValueError("The output 'pixel_values' is not a tensor convertible to numpy array.")
-        image_np = image_array.numpy().astype(np.float16)
-
+        if isinstance(image_array, np.ndarray):
+            image_np = image_array.astype(np.float16)
+        elif hasattr(image_array, "numpy"):
+            image_np = image_array.numpy().astype(np.float16)
+        else:
+            raise ValueError("The output 'pixel_values' is neither a numpy array nor convertible to one.")
+    
         # Add a batch dimension: [1, 3, 224, 224]
-        image_np = np.expand_dims(image_np, axis=0)
+        if image_np.ndim == 3:
+            # No batch dimension, so add one.
+            image_np = np.expand_dims(image_np, axis=0)
+        elif image_np.ndim == 5 and image_np.shape[1] == 1:
+            # Remove the extra dimension (squeeze out axis 1)
+            image_np = np.squeeze(image_np, axis=1)
+        # Otherwise, if image_np.ndim is 4, assume it's already [batch, 3, 224, 224].   
 
         return image_np
 

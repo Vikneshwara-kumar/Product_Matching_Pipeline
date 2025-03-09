@@ -9,6 +9,7 @@ import asyncio
 import numpy as np
 import hashlib
 from db import qdrant_client, mongodb_client
+from qdrant_client import QdrantClient
 from utils.logger import log_event_sync  # our MongoDB logger
 
 # In-memory cache for matching results.
@@ -44,7 +45,7 @@ async def match_product_by_text(text_embedding: np.ndarray):
             return product_cache[cache_key]
 
     try:
-        product_id = await qdrant_client.search_embedding(text_embedding, collection="product_text")
+        product_id = await qdrant_client.search_embedding(text_embedding, collection="products_text")
     except Exception as e:
         log_event_sync("ERROR", f"Error during text matching: {e}", extra={"cache_key": cache_key})
         raise RuntimeError(f"Text matching failed: {e}")
@@ -62,7 +63,7 @@ async def match_product_by_text(text_embedding: np.ndarray):
 
 async def match_product_by_visual(visual_embedding: np.ndarray):
     """
-    Matches a product using a visual embedding by querying the Qdrant 'product_image' collection,
+    Matches a product using a visual embedding by querying the Qdrant 'products_image' collection,
     then retrieving metadata from MongoDB.
     Uses an in-memory cache to optimize repeated queries.
 
@@ -79,7 +80,7 @@ async def match_product_by_visual(visual_embedding: np.ndarray):
             return product_cache[cache_key]
 
     try:
-        product_id = await qdrant_client.search_embedding(visual_embedding, collection="product_image")
+        match_score, product_id = await qdrant_client.search_embedding(visual_embedding, collection="products_visual")
     except Exception as e:
         log_event_sync("ERROR", f"Error during visual matching: {e}", extra={"cache_key": cache_key})
         raise RuntimeError(f"Visual matching failed: {e}")
@@ -93,4 +94,4 @@ async def match_product_by_visual(visual_embedding: np.ndarray):
     async with cache_lock:
         product_cache[cache_key] = product
 
-    return product
+    return match_score, product

@@ -13,7 +13,7 @@ import motor.motor_asyncio
 logging.basicConfig(level=logging.INFO)
 
 # Configuration parameters for the MongoDB logging instance.
-LOG_MONGO_URI = "mongodb://localhost:27018"  # Use a separate port/instance for logging.
+LOG_MONGO_URI = "mongodb://localhost:27017"  # Use a separate port/instance for logging.
 LOG_DB_NAME = "log_db"
 LOG_COLLECTION_NAME = "system_logs"
 
@@ -24,45 +24,37 @@ collection = db[LOG_COLLECTION_NAME]
 
 async def log_event(level: str, message: str, extra: dict = None):
     """
-    Asynchronously logs an event to the MongoDB logging collection.
-
-    Args:
-        level (str): The log level (e.g., "INFO", "ERROR").
-        message (str): The log message.
-        extra (dict, optional): Additional contextual data to log.
-
-    Returns:
-        The inserted document's ID if successful, or None if logging failed.
+    Asynchronously logs an event to MongoDB.
     """
     log_doc = {
         "level": level,
         "message": message,
-        "extra": extra or {},
+        "extra": extra or {}
     }
     try:
         result = await collection.insert_one(log_doc)
         return result.inserted_id
     except Exception as e:
-        # Fallback logging if MongoDB insertion fails.
         logging.error(f"Failed to log event to MongoDB: {e}")
         return None
 
 def log_event_sync(level: str, message: str, extra: dict = None):
     """
-    Synchronous wrapper for log_event, allowing logging from non-async code.
-
-    Args:
-        level (str): The log level.
-        message (str): The log message.
-        extra (dict, optional): Additional contextual data.
-
-    Returns:
-        The inserted document's ID if successful, or None if logging failed.
+    Synchronous wrapper for logging events.
+    If an event loop is already running (e.g., in Streamlit), the logging coroutine is scheduled
+    as a fire-and-forget task. Otherwise, a new event loop is created to run the coroutine.
     """
     try:
-        loop = asyncio.get_event_loop()
+        # Try to get the current running loop.
+        loop = asyncio.get_running_loop()
+        # If the loop is running, schedule the log_event coroutine.
+        if loop.is_running():
+            loop.create_task(log_event(level, message, extra))
+        else:
+            # Should rarely happen, but run synchronously if the loop isn't running.
+            loop.run_until_complete(log_event(level, message, extra))
     except RuntimeError:
-        # If there's no running event loop, create a new one.
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-    return loop.run_until_complete(log_event(level, message, extra))
+        # No running loop; create a new one.
+        new_loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(new_loop)
+        new_loop.run_until_complete(log_event(level, message, extra))

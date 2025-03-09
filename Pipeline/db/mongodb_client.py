@@ -25,7 +25,7 @@ async def get_product(product_id: str):
         Exception: Propagates any other errors after logging.
     """
     try:
-        product = await collection.find_one({"_id": product_id})
+        product = await collection.find_one({"id": product_id})
         if product:
             # Optionally, log the successful retrieval.
             # log_event_sync("INFO", f"Product {product_id} retrieved successfully.", extra={"product_id": product_id})
