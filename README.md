@@ -26,7 +26,7 @@ A complete AI-driven product matching pipeline that uses:
 7. [Usage Guide](#usage-guide)
 8. [sample Data](#sample-data-schema)
 9. [Developer Guidelines](#developer-guidelines)
-10. [License](#license)
+10. [License](#License)
 
 ---
 
@@ -257,3 +257,8 @@ Below is an example JSON document showing how product metadata can be structured
     -   Batching: For high throughput, implement batching at the Triton or Qdrant level.
     -   Client Reuse: If you have many concurrent requests, ensure clients (Triton, Qdrant) are reused effectively.
     -   Async Logging: Currently, logs are inserted asynchronously to avoid blocking the main thread. For extremely high volumes, consider a dedicated logging pipeline.
+
+## License
+This project is licensed under the MIT License. Feel free to use, modify, and distribute this project for both personal and commercial purposes.
+
+For more details, see the LICENSE file in the repository.
