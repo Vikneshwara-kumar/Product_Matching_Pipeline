@@ -43,11 +43,7 @@ The system also includes an in-memory caching layer to optimize repeated searche
 ---
 
 ## Demo video 
-[Watch the demo video](./assets/demo_video.mp4)
-<video width="640" height="360" controls>
-  <source src="https://raw.githubusercontent.com/https:/Vikneshwara-kumar/Product_Matching_Pipeline/blob/main/assets/demo_video.mp4" type="video/mp4">
-</video>
-
+![Demo video](./assets/demo_video1.gif)
 
 ## Architecture
 
