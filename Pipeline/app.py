@@ -95,7 +95,7 @@ if st.button("Match Product"):
             log_event_sync(
                 "RESULT",
                 "Text matching execution result stored.",
-                extra={"match_type": "text", "product": product, "input_text": input_text}
+                extra={"match_type": "text", "product": product, "input_text_length": len(input_text)}
             )
         else:
             st.warning("Please upload an image or enter text for product matching.")

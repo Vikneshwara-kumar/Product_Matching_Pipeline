@@ -6,13 +6,16 @@ This version uses the official QdrantClient to perform a search.
 """
 
 import asyncio
-import requests
+import os
 import numpy as np
 from utils.logger import log_event_sync
 from qdrant_client import QdrantClient
 
 # Create a global QdrantClient instance.
-CLIENT = QdrantClient(host="localhost", port=6333)
+CLIENT = QdrantClient(
+    host=os.getenv("QDRANT_HOST", "localhost"),
+    port=int(os.getenv("QDRANT_PORT", "6333"))
+)
 
 async def search_embedding(embedding: np.ndarray, collection: str, top_k: int = 5):
     """
@@ -56,7 +59,7 @@ async def search_embedding(embedding: np.ndarray, collection: str, top_k: int = 
             log_event_sync(
                 "ERROR",
                 msg,
-                extra={"collection": collection, "query_vector": query_vector}
+                extra={"collection": collection}
             )
             raise ValueError(msg)
             
@@ -64,6 +67,6 @@ async def search_embedding(embedding: np.ndarray, collection: str, top_k: int = 
         log_event_sync(
             "ERROR",
             f"Error during Qdrant search in collection '{collection}': {e}",
-            extra={"collection": collection, "query_vector": query_vector}
+            extra={"collection": collection}
         )
         raise e

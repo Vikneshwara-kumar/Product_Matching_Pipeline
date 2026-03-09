@@ -8,6 +8,7 @@ This version uses PIL for images and Hugging Face's CLIPProcessor for preprocess
 """
 
 import asyncio
+import os
 import numpy as np
 import tritonclient.http as httpclient  # NVIDIA Triton client library
 from utils.logger import log_event_sync  # our MongoDB logger
@@ -18,8 +19,8 @@ from transformers import CLIPProcessor, CLIPTokenizer
 PROCESSOR = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 TOKENIZER = CLIPTokenizer.from_pretrained("openai/clip-vit-base-patch32")
 
-trition_url = "localhost:8000"  # Triton Inference Server endpoint
-TCLIENT = httpclient.InferenceServerClient(url=trition_url)
+TRITON_URL = os.getenv("TRITON_URL", "localhost:8000")  # Triton Inference Server endpoint
+TCLIENT = httpclient.InferenceServerClient(url=TRITON_URL)
 
 async def get_clip_text_embedding(text_prompt: str) -> np.ndarray:
     """
@@ -35,7 +36,7 @@ async def get_clip_text_embedding(text_prompt: str) -> np.ndarray:
         # Preprocess text using Hugging Face's tokenizer.
         text_data = preprocess_text(text_prompt)
     except Exception as e:
-        log_event_sync("ERROR", f"Text preprocessing failed: {e}", extra={"function": "get_clip_text_embedding", "text": text_prompt})
+        log_event_sync("ERROR", f"Text preprocessing failed: {e}", extra={"function": "get_clip_text_embedding", "text_length": len(text_prompt) if isinstance(text_prompt, str) else 0})
         raise ValueError(f"Text preprocessing failed: {e}")
 
     try:
@@ -180,5 +181,5 @@ def preprocess_text(text):
         return text_array
 
     except Exception as e:
-        log_event_sync("ERROR", f"Error in preprocessing text: {e}", extra={"function": "preprocess_text", "text": text})
+        log_event_sync("ERROR", f"Error in preprocessing text: {e}", extra={"function": "preprocess_text", "text_length": len(text) if isinstance(text, str) else 0})
         raise RuntimeError(f"Error in preprocessing text: {e}")

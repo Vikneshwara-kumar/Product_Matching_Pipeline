@@ -7,15 +7,16 @@ This module uses Motor (the asynchronous MongoDB driver) to log events.
 
 import asyncio
 import logging
+import os
 import motor.motor_asyncio
 
 # Configure logging for fallback in case MongoDB logging fails.
 logging.basicConfig(level=logging.INFO)
 
 # Configuration parameters for the MongoDB logging instance.
-LOG_MONGO_URI = "mongodb://localhost:27017"  # Use a separate port/instance for logging.
-LOG_DB_NAME = "log_db"
-LOG_COLLECTION_NAME = "system_logs"
+LOG_MONGO_URI = os.getenv("LOG_MONGO_URI", "mongodb://localhost:27017")
+LOG_DB_NAME = os.getenv("LOG_DB_NAME", "log_db")
+LOG_COLLECTION_NAME = os.getenv("LOG_COLLECTION_NAME", "system_logs")
 
 # Create an asynchronous MongoDB client using Motor.
 client = motor.motor_asyncio.AsyncIOMotorClient(LOG_MONGO_URI)
