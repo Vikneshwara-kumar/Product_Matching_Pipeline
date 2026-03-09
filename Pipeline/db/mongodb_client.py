@@ -1,9 +1,10 @@
+import os
 import motor.motor_asyncio
 from utils.logger import log_event_sync  # Import the MongoDB logger
 
-MONGO_URI = "mongodb://localhost:27017"
-DB_NAME = "product_db"
-COLLECTION_NAME = "product_metadata"
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+DB_NAME = os.getenv("MONGO_DB_NAME", "product_db")
+COLLECTION_NAME = os.getenv("MONGO_COLLECTION_NAME", "product_metadata")
 
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URI)
 db = client[DB_NAME]
